@@ -1,0 +1,12 @@
+{
+  "organizations": [
+    {
+      "name": "Organization 1",
+      "code": "00001",
+      "address": "Some street 1",
+      "contactName": "Tom Test",
+      "contactInfo": "Contact info Tom ntest",
+      "id": 1
+    }
+  ]
+}
