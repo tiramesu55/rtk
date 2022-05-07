@@ -1,15 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import OrganizationForm from './features/organizations/Organizations';
-import './App.css';
+import Layout from "./components/Layout";
+import { Routes, Route } from 'react-router-dom';
+import OrganizationForm from './features/organizations/Organizations'
+
+import AddUserForm from "./features/users/addUser";
+import ListUsers from "./features/users/allUsers";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <OrganizationForm />
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+
+      <Route index element={<OrganizationForm />} />
+
+      <Route path="user">
+          <Route index element={<ListUsers />} />
+          <Route path="add" element = {<AddUserForm />} />
+       </Route>
+
+    </Route>
+  </Routes>
+
   );
 }
 

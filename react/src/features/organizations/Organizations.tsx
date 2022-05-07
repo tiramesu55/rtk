@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useEffect, useMemo } from "react";
-import { isTemplateTail } from "typescript";
+
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import {
   selectOrganizations,
@@ -18,7 +18,7 @@ const OrganizationForm = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getOrganizationsAsync());
-  }, []);
+  }, [dispatch]);
   const selectedOrganization = useMemo(() => {
     const selectedOrg = organizations.find((item) => item.id === selectedId);
     if (selectedOrg) {

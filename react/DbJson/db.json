@@ -1,0 +1,44 @@
+{
+  "organizations": [
+    {
+      "name": "Walgreens",
+      "code": "WAG",
+      "address": "Some street 1",
+      "contactName": "Tom Test",
+      "contactInfo": "Contact info Tom for Test",
+      "id": 1
+    },
+    {
+      "name": "Nucleus",
+      "code": "NUC",
+      "address": "1117 Perimeter",
+      "contactName": "John DOe",
+      "contactInfo": "Contact John for Analytics",
+      "id": 2
+    }
+  ],
+  "users": [
+
+    {
+      "id": "JlKVcmdmVYANEiVtyNyQr",
+      "name": "Jackie",
+      "content": "address, phone and other stuff",
+      "orgId": 1,
+      "date": "Sat May 07 2022"
+    },
+    {
+      "id": "vlKVcmdmVaANEiVtyNyzr",
+      "name": "Victor",
+      "content": "OKTA address, OKTA phone other data.  Also links to Applications (similar to how organizations are done",
+      "orgId": 1,
+      "date": "Sat May 06 2022"
+    },
+    {
+      "id": "0lKVcmdmVYANEiVtyNyQr",
+      "name": "Nick",
+      "content": "Nick sites, apps, address, phone and other stuff",
+      "orgId": 2,
+      "date": "Sat May 04 2022"
+    }
+  ]
+}
