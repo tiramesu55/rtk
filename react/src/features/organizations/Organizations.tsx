@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useEffect, useMemo } from "react";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
