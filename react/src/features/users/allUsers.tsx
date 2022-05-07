@@ -1,7 +1,7 @@
 import {useAppSelector, useAppDispatch} from '../../app/hooks';
 import  {  useEffect } from "react";
 import {fetchUsers,allUsers} from './usersSlice';
-
+import '../../App.css'
 const ListUsers = () =>{
     const dispatch = useAppDispatch();
     const users = useAppSelector(allUsers);
