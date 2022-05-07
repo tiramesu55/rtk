@@ -18,7 +18,7 @@ const OrganizationForm = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getOrganizationsAsync());
-  }, []);
+  }, [dispatch]);
   const selectedOrganization = useMemo(() => {
     const selectedOrg = organizations.find((item) => item.id === selectedId);
     if (selectedOrg) {
