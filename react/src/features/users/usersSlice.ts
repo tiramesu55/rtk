@@ -1,4 +1,4 @@
-import { createSlice, nanoid, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, nanoid, createAsyncThunk, PayloadAction, createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 //import { sub } from 'date-fns';
 import { RootState } from '../../app/store';
 import axios from "axios";
@@ -13,17 +13,20 @@ export interface User {
     date: string
   }
 
-interface UserState {
-    users: User[],
-    selectedId? : string ,
-    status: 'idle' | 'loading' | 'succeeded' | 'failed',
-    error? : string
-}  
-const initialState:UserState = {
-    users: [] as User[]  ,
-    status: 'idle', 
+// interface UserState {
+//     users: User[],
+//     selectedId? : string ,
+//     status: 'idle' | 'loading' | 'succeeded' | 'failed',
+//     error? : string
+// }
 
-}
+const userAdapter = createEntityAdapter<User>({
+    sortComparer: (a,b) => a.name.localeCompare( b.name)
+})
+const initialState = userAdapter.getInitialState( {
+    status: 'idle', 
+    error: ''
+})
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     const response = await axios.get(USERS_URL)
@@ -49,26 +52,12 @@ export const deleteUser = createAsyncThunk('Users/deleteUser', async (initialUse
     
 })
 
+
 const usersSlice = createSlice({
     name: 'users',
     initialState,
     reducers: {
-        AddingUser: {
-            reducer(state, action: PayloadAction<User>) {
-                state.users.push(action.payload)
-            },
-            prepare( name:string, content:string, org: number) {
-                return {
-                    payload: {
-                        id: nanoid(),
-                        name,
-                        content,
-                        orgId: org,
-                        date: new Date().toISOString(),
-                     }
-                }
-            }
-        },
+        
        
     },
     extraReducers(builder) {
@@ -78,18 +67,19 @@ const usersSlice = createSlice({
             })
             .addCase(fetchUsers.fulfilled, (state, action) => {
                 state.status = 'succeeded'
+                userAdapter.upsertMany(state, action.payload)
                
-                state.users = action.payload;
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.status = 'failed'
-                state.error = action.error.message
+                state.error = action.error.message!
             })
             .addCase(addNewUser.fulfilled, (state, action) => {
                 action.payload.date = new Date().toISOString();
                
                 console.log(action.payload)
-                state.users.push(action.payload)
+                userAdapter.addOne( state,action.payload )
+                
             })
             .addCase(updateUser.fulfilled, (state, action) => {
                 
@@ -98,10 +88,10 @@ const usersSlice = createSlice({
                     console.log(action.payload)
                     return;
                 }
-                const { id } = action.payload;
+
                 action.payload.date = new Date().toISOString();
-                const users = state.users.filter(user => user.id !== id);
-                state.users = [...users, action.payload];
+                userAdapter.upsertOne(state, action.payload);
+
             })
 
     }
@@ -111,8 +101,10 @@ const usersSlice = createSlice({
 //export const getUsersStatus = (state :UserState ) => state.users.status;
 //export const getUsersError = (state) => state.Users.error;
 
-export const selectUserById = (state:RootState , id: string) => state.user.users.find(user => user.id === id);
-export const allUsers = (state: RootState) => state.user.users;
-export const { AddingUser } = usersSlice.actions
+export const{ 
+    selectAll: allUsers,
+    selectById: selectUserById,
+    selectIds: selectUserIds
+} = userAdapter.getSelectors((state: RootState)  => state.user)
 
 export default usersSlice.reducer
